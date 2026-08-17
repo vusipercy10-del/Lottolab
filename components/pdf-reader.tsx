@@ -17,9 +17,6 @@ export default function PdfReader() {
       setText('');
       setRows([]);
       const pdfjs = await import('pdfjs-dist/legacy/build/pdf.mjs');
-      const worker = await import('pdfjs-dist/legacy/build/pdf.worker.mjs');
-      // pdfjs v5 exposes the worker module through the module workerPort API.
-      (pdfjs.GlobalWorkerOptions as { workerPort?: unknown }).workerPort = new worker.WorkerMessageHandler ? undefined : undefined;
       const buffer = await file.arrayBuffer();
       const loadingTask = pdfjs.getDocument({ data: new Uint8Array(buffer), disableWorker: true });
       const pdf = await loadingTask.promise;
