@@ -95,7 +95,7 @@ export default function ResearchLab() {
     counts.sort((a,b)=>a-b); setSim({avg:Number((total/trials).toFixed(3)),p95:counts[Math.floor(trials*.95)]});
   }
   function savePrediction(){setSaved(v=>[...v,candidate]);}
-  function evaluateSaved(){ const a=parse(actual,game)[0]; if(!a||!saved.length) return; setSaved(v=>v.map(p=>p)); alert(`Latest saved prediction matched ${matches(saved[saved.length-1],a)}/${game.pick}.`); }
+  function evaluateSaved(){ const a=parse(actual,game)[0]; if(!a||!saved.length) return; alert(`Latest saved prediction matched ${matches(saved[saved.length-1],a)}/${game.pick}.`); }
   const validRows=raw.split(/\n|;/).filter(x=>x.trim()).length;
 
   return <main style={{minHeight:'100vh',padding:24,fontFamily:'system-ui',background:'#0b1020',color:'#eef2ff'}}>
@@ -105,7 +105,7 @@ export default function ResearchLab() {
         <a href="/" style={{color:'#fff',textDecoration:'none',border:'1px solid #3b4565',padding:'10px 14px',borderRadius:10}}>← Dashboard</a>
       </header>
 
-      <section style={card}><h2 style={h2}>1. Data Engine</h2><div style={grid2}><label>Game<select value={gameId} onChange={e=>setGameId(e.target.value)} style={input}>{GAMES.map(g=><option key={g.id}>{g.id}</option>)}</select></label><label>Walk-forward window<input type="number" min={3} value={window} onChange={e=>setWindow(Math.max(3,+e.target.value||3))} style={input}/></label></div>
+      <section style={card}><h2 style={h2}>1. Data Engine</h2><div style={grid2}><label>Game<select value={gameId} onChange={e=>setGameId(e.target.value)} style={input}>{GAMES.map(g=><option key={g.id} value={g.id}>{g.name}</option>)}</select></label><label>Walk-forward window<input type="number" min={3} value={window} onChange={e=>setWindow(Math.max(3,+e.target.value||3))} style={input}/></label></div>
       <textarea value={raw} onChange={e=>setRaw(e.target.value)} style={{...input,width:'100%',minHeight:160,marginTop:12}} placeholder="Paste one draw per line. Numbers may be separated by commas, spaces, | or ;."/>
       <div style={{display:'flex',gap:10,flexWrap:'wrap',marginTop:12}}><span style={pill}>Rows supplied: {validRows}</span><span style={pill}>Valid draws: {draws.length}</span><span style={pill}>Required: {game.pick} numbers</span><span style={pill}>Range: 1–{game.max}</span><span style={{...pill,background:draws.length===validRows?'#123d2b':'#4a2d12'}}>{draws.length===validRows?'DATA CLEAN':'CHECK INVALID ROWS'}</span></div></section>
 
@@ -117,7 +117,7 @@ export default function ResearchLab() {
 
       <section style={card}><h2 style={h2}>5. Prediction Tracker</h2><div style={{display:'flex',gap:10,flexWrap:'wrap'}}><input value={actual} onChange={e=>setActual(e.target.value)} placeholder="Paste actual next draw" style={{...input,flex:1,minWidth:240}}/><button onClick={evaluateSaved} style={button}>Evaluate latest saved prediction</button></div><div style={{marginTop:12}}>{saved.map((p,i)=><div key={i} style={{padding:'9px 0',borderBottom:'1px solid #252d45'}}>#{i+1}: {p.join(' · ')}</div>)}</div></section>
 
-      <section style={card}><h2 style={h2}>6. Engine Status</h2><div style={grid2}>{['Data validation','Frequency/recency','Markov transitions','Zone analysis','Pair/triplet analysis','Ensemble scoring','Walk-forward backtest','Monte Carlo baseline','Prediction tracker'].map((x,i)=><div key={x} style={{...pill,display:'flex',justifyContent:'space-between'}}><span>{x}</span><span>✓</span></div>)}</div></section>
+      <section style={card}><h2 style={h2}>6. Engine Status</h2><div style={grid2}>{['Data validation','Frequency/recency','Markov transitions','Zone analysis','Pair/triplet analysis','Ensemble scoring','Walk-forward backtest','Monte Carlo baseline','Prediction tracker'].map(x=><div key={x} style={{...pill,display:'flex',justifyContent:'space-between'}}><span>{x}</span><span>✓</span></div>)}</div></section>
       <footer style={{opacity:.55,fontSize:12,marginTop:18}}>LottoLab is a research and statistical analysis tool. Lottery outcomes remain random; historical patterns and model scores cannot guarantee future results.</footer>
     </div>
   </main>
@@ -131,6 +131,7 @@ const button={background:'#243b68',color:'#fff',border:'1px solid #4668a6',borde
 const pill={background:'#1a2338',border:'1px solid #303b59',borderRadius:10,padding:'9px 12px',display:'inline-block'} as const;
 const grid2={display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(220px,1fr))',gap:12} as const;
 const sliderGrid={display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))',gap:16} as const;
+const metricGrid={display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))',gap:12} as const;
 const candidateBox={display:'flex',gap:10,flexWrap:'wrap'} as const;
 const ball={width:46,height:46,borderRadius:'50%',display:'grid',placeItems:'center',background:'#244b8a',border:'2px solid #638bd0',fontWeight:800} as const;
 const table={width:'100%',borderCollapse:'collapse',fontSize:13} as const;
